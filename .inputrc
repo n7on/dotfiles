@@ -1,0 +1,16 @@
+set editing-mode vi
+set keyseq-timeout 1
+set show-mode-in-prompt on
+set vi-cmd-mode-string ":"
+set vi-ins-mode-string ">"
+
+$if mode=vi
+    set keymap vi-insert
+    "\C-l": clear-screen
+
+    set keymap vi-command
+    "G": end-of-history
+    "gg": beginning-of-history
+    "\C-l": clear-screen
+    "\C-r": __fzf_history__
+$endif
