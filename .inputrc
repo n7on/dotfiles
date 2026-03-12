@@ -1,6 +1,9 @@
 set editing-mode vi
 set keyseq-timeout 1
 set show-mode-in-prompt on
+set completion-ignore-case on
+set colored-stats On
+set visible-stats On
 set vi-cmd-mode-string ":"
 set vi-ins-mode-string ">"
 
