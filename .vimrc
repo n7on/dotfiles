@@ -43,18 +43,19 @@ nnoremap <Leader>tv :vertical terminal ++cols=50<CR>
 nnoremap <Leader>th :terminal ++rows=10<CR>
 " vim config
 nnoremap <Leader>sv :source $MYVIMRC <CR>
-nnoremap <Leader>ev :e $MYVIMRC <CR>
+nnoremap <Leader>se :e $MYVIMRC <CR>
 " slime
-vmap <leader>x <Plug>SlimeRegionSend
-nmap <leader>x <Plug>SlimeParagraphSend
+vmap <leader>xx <Plug>SlimeRegionSend
+nmap <leader>xx <Plug>SlimeLineSend
+nmap <leader>xc <Plug>SlimeConfig
 " window navigation
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 " ctrlp
-nnoremap <leader>f :CtrlP<CR>
-nnoremap <leader>b :CtrlPBuffer<CR>
+nnoremap <leader>ff :CtrlP<CR>
+nnoremap <leader>fb :CtrlPBuffer<CR>
 
 
 " packages
@@ -105,4 +106,4 @@ call LspOptionsSet(#{
      \   highlightDiagInline: v:false,
      \ })
 
-command! -nargs=1 Vg noautocmd vimgrep! /<args>/ **/* | copen
+command! -nargs=1 Vg noautocmd vimgrep! /\c<args>/ **/* | copen
