@@ -19,38 +19,65 @@ filetype plugin indent on
 
 colorscheme ghdark
 let g:mapleader=" "
+" don't want c-p
+let g:ctrlp_map = ''
 
 " Netrw settings
 let g:netrw_banner = 0        " Hide banner
 let g:netrw_liststyle = 3     " Tree view
 
+" Slime settings
+let g:slime_target = "tmux"
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+let g:slime_dont_ask_default = 1
+let g:slime_no_mappings = 1
+
+" lsp
 nnoremap <silent><nowait> gd :LspGotoDefinition<CR>
 nnoremap <silent><nowait> gi :LspGotoImpl<CR>
 nnoremap <silent><nowait> gh :LspHover<CR>
 nnoremap <silent><nowait> gh :LspDiag current<CR>
-nnoremap <Leader>vt :vertical terminal ++cols=50<CR>
-nnoremap <Leader>t :terminal ++rows=10<CR>
-nnoremap <Leader>rg :!go run .<CR>
-nnoremap <Leader>rpl :w !perl <CR>
-nnoremap <Leader>rp :w !python <CR>
-nnoremap <Leader>sv :source $MYVIMRC <CR>
 nnoremap <Leader>di :LspDiagCurrent <Cv>
-
-" Window navigation
+" terminal
+nnoremap <Leader>tv :vertical terminal ++cols=50<CR>
+nnoremap <Leader>th :terminal ++rows=10<CR>
+" vim config
+nnoremap <Leader>sv :source $MYVIMRC <CR>
+nnoremap <Leader>ev :e $MYVIMRC <CR>
+" slime
+vmap <leader>x <Plug>SlimeRegionSend
+nmap <leader>x <Plug>SlimeParagraphSend
+" window navigation
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
+" ctrlp
+nnoremap <leader>f :CtrlP<CR>
+nnoremap <leader>b :CtrlPBuffer<CR>
 
-augroup objc_ft
-  autocmd!
-  autocmd BufNewFile,BufRead *.m   setfiletype objc
-  autocmd BufNewFile,BufRead *.mm  setfiletype objcpp
-augroup END
 
+" packages
 packadd lsp
 packadd vim-commentary
 packadd vim-surround
+packadd vim-fugitive
+packadd vim-signify
+packadd vim-slime
+packadd ctrlp
+
+" Swedish keyboard
+augroup helpnav
+    autocmd!
+    autocmd FileType help nnoremap <buffer> <CR> <C-]>
+    autocmd FileType help nnoremap <buffer> <BS> <C-o>
+augroup END
+
+augroup objc_ft
+    autocmd!
+    autocmd BufNewFile,BufRead *.m   setfiletype objc
+    autocmd BufNewFile,BufRead *.mm  setfiletype objcpp
+augroup END
 
 " Clangd language server
 call LspAddServer([#{
@@ -69,3 +96,13 @@ call LspAddServer([#{name: 'gopls',
      \   path: 'gopls',
      \   args: ['serve']
      \ }])
+call LspAddServer([#{name: 'bashls',
+	 \   filetype: ['sh', 'bash'],
+	 \   path: '/opt/homebrew/bin/bash-language-server',
+	 \   args: ['start']
+	 \ }])
+call LspOptionsSet(#{
+     \   highlightDiagInline: v:false,
+     \ })
+
+command! -nargs=1 Vg noautocmd vimgrep! /<args>/ **/* | copen
