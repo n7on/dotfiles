@@ -80,6 +80,11 @@ augroup objc_ft
     autocmd BufNewFile,BufRead *.mm  setfiletype objcpp
 augroup END
 
+augroup markdown_preview
+    autocmd!
+    autocmd FileType markdown command! -buffer Preview call system('tmux split-window -h "mdcat --colour always ' . expand('%:p') . ' | less -R"')
+augroup END
+
 " Clangd language server
 call LspAddServer([#{
 	\    name: 'clangd',
@@ -107,3 +112,4 @@ call LspOptionsSet(#{
      \ })
 
 command! -nargs=1 Vg noautocmd vimgrep! /\c<args>/ **/* | copen
+
