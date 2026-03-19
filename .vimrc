@@ -32,6 +32,13 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 let g:slime_dont_ask_default = 1
 let g:slime_no_mappings = 1
 
+" Clipboard
+if has('macunix')
+    let g:clipboard_cmd = 'pbcopy'
+else
+    let g:clipboard_cmd = 'clip.exe'
+endif
+
 " lsp
 nnoremap <silent><nowait> gd :LspGotoDefinition<CR>
 nnoremap <silent><nowait> gi :LspGotoImpl<CR>
@@ -56,47 +63,38 @@ nnoremap <C-l> <C-w>l
 " ctrlp
 nnoremap <leader>ff :CtrlP<CR>
 nnoremap <leader>fb :CtrlPBuffer<CR>
-
+" clipboard
+xnoremap <leader>y :<C-u>execute "'<,'>w !" . g:clipboard_cmd<CR>
+nnoremap <leader>Y :<C-u>execute "%w !" . g:clipboard_cmd<CR>
 
 " packages
 packadd lsp
 packadd vim-commentary
 packadd vim-surround
 packadd vim-fugitive
-packadd vim-signify
 packadd vim-slime
 packadd ctrlp
 
-" Swedish keyboard
+" Swedish keyboard in help
 augroup helpnav
     autocmd!
     autocmd FileType help nnoremap <buffer> <CR> <C-]>
     autocmd FileType help nnoremap <buffer> <BS> <C-o>
 augroup END
 
-augroup objc_ft
-    autocmd!
-    autocmd BufNewFile,BufRead *.m   setfiletype objc
-    autocmd BufNewFile,BufRead *.mm  setfiletype objcpp
-augroup END
-
-augroup markdown_preview
-    autocmd!
-    autocmd FileType markdown command! -buffer Preview call system('tmux split-window -h "mdcat --colour always ' . expand('%:p') . ' | less -R"')
-augroup END
-
-" Clangd language server
+" LSP
+call LspAddServer([#{name: 'vimls',
+    \   filetype: 'vim',
+    \   path: 'vim-language-server',
+    \   args: ['--stdio']
+    \ }])
 call LspAddServer([#{
 	\    name: 'clangd',
-	\    filetype: ['c', 'cpp', 'objc', 'objcpp'],
-	\    path: '/usr/bin/clangd',
-	\    args: ['--background-index',
-    \    '--clang-tidy',
-    \    '--completion-style=detailed',
-    \    '--query-driver=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang*'
-    \  ]
+	\    filetype: ['c', 'cpp'],
+	\    path: 'clangd',
+	\    args: ['--background-index']
 	\  }])
-" Go
+
 call LspAddServer([#{name: 'gopls',
      \   filetype: 'go',
      \   path: 'gopls',
@@ -104,7 +102,7 @@ call LspAddServer([#{name: 'gopls',
      \ }])
 call LspAddServer([#{name: 'bashls',
 	 \   filetype: ['sh', 'bash'],
-	 \   path: '/opt/homebrew/bin/bash-language-server',
+	 \   path: 'bash-language-server',
 	 \   args: ['start']
 	 \ }])
 call LspOptionsSet(#{
