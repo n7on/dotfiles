@@ -26,6 +26,10 @@ let g:ctrlp_map = ''
 let g:netrw_banner = 0        " Hide banner
 let g:netrw_liststyle = 3     " Tree view
 
+" autoread
+set autoread
+au FocusGained,BufEnter * checktime
+
 " Slime settings
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
@@ -74,6 +78,7 @@ packadd vim-surround
 packadd vim-fugitive
 packadd vim-slime
 packadd ctrlp
+packadd vim-gitgutter
 
 " Swedish keyboard in help
 augroup helpnav
@@ -110,4 +115,4 @@ call LspOptionsSet(#{
      \ })
 
 command! -nargs=1 Vg noautocmd vimgrep! /\c<args>/ **/* | copen
-
+command! -nargs=1 Jq let &efm='%m' | cexpr system('jq -r '..shellescape(<q-args>)..' '.expand('%')) | copen
