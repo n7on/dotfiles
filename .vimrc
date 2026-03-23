@@ -114,5 +114,5 @@ call LspOptionsSet(#{
      \   highlightDiagInline: v:false,
      \ })
 
-command! -nargs=1 Vg noautocmd vimgrep! /\c<args>/ **/* | copen
+command! -nargs=1 Vg vimgrep! /\c<args>/ **/* | copen
 command! -nargs=1 Jq let &efm='%m' | cexpr system('jq -r '..shellescape(<q-args>)..' '.expand('%')) | copen
