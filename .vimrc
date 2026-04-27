@@ -59,6 +59,7 @@ nnoremap <Leader>se :e $MYVIMRC <CR>
 vmap <leader>xx <Plug>SlimeRegionSend
 nmap <leader>xx <Plug>SlimeLineSend
 nmap <leader>xc <Plug>SlimeConfig
+nmap <Leader>xb :call SlimeSendFencedBlock()<CR>
 " window navigation
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
@@ -115,4 +116,12 @@ call LspOptionsSet(#{
      \ })
 
 command! -nargs=1 Vg vimgrep! /\c<args>/ **/* | copen
-command! -nargs=1 Jq let &efm='%m' | cexpr system('jq -r '..shellescape(<q-args>)..' '.expand('%')) | copen
+
+function! SlimeSendFencedBlock() abort
+  let l:open = search('^\s*```', 'bnW')
+  if l:open == 0 | return | endif
+  let l:close = search('^\s*```\s*$', 'nW')
+  if l:close == 0 | return | endif
+  call slime#send_range(l:open + 1, l:close - 1)
+endfunction
+
