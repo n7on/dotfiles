@@ -29,8 +29,9 @@ Leader key: `Space`
 #### Slime (send to tmux)
 | Binding | Mode | Action |
 |---------|------|--------|
-| `<Leader>x` | Visual | Send selection to tmux pane |
-| `<Leader>x` | Normal | Send paragraph to tmux pane |
+| `<Leader>xx` | Visual | Send selection to tmux pane |
+| `<Leader>xx` | Normal | Send paragraph to tmux pane |
+| `<Leader>xb` | Normal | Send md code block to tmux pane |
 
 #### Window Navigation
 | Binding | Action |
@@ -60,6 +61,7 @@ Prefix key: `Ctrl-f`
 |---------|--------|
 | `Prefix Space` | Enter copy mode |
 | `Prefix r` | Reload tmux.conf |
+| `Prefix .` | Rename pane |
 
 #### Copy Mode (vi)
 | Binding | Action |
